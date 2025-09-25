@@ -80,6 +80,8 @@ const chartConfig = {
     }
 };
 
+let link = "https://youtu.be/dQw4w9WgXcQ?feature=shared"
+
 const resourceLinks = {
     "Java Basics & OOP": {
         "Study Notes": "https://www.geeksforgeeks.org/java/",

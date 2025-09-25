@@ -19,8 +19,8 @@ export default function Auth() {
   };
 
   return (
-    <div className="antialiased font-sans bg-[#f8f7f4] text-[#4a4a4a] min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-      <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center">
+    <div className="antialiased font-sans bg-[#4A4A49] text-[#ececec] min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+      <div className="bg-[#dadada] p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center">
         <div className="flex justify-center mb-6">
           <svg className="w-24 h-24" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
             <defs>

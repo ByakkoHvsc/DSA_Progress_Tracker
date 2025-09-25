@@ -80,108 +80,108 @@ const chartConfig = {
     }
 };
 
-let link = "https://youtu.be/dQw4w9WgXcQ?feature=shared"
+let link = "https://youtu.be/dQw4w9WgXcQ?feature=shared";
 
 const resourceLinks = {
     "Java Basics & OOP": {
         "Study Notes": "https://www.geeksforgeeks.org/java/",
         "Practice Problems": "https://www.hackerrank.com/domains/java",
-        "Video Tutorials": "https://www.youtube.com/watch?v=UqN7pn-uD3g"
+        "Video Tutorials": "https://youtu.be/pTB0EiLXUC8?si=WLVpSlD0MHDP87wo"
     },
     "Time & Space Complexity": {
         "Study Notes": "https://www.geeksforgeeks.org/analysis-of-algorithms-set-1-asymptotic-analysis/",
         "Practice Problems": "https://www.geeksforgeeks.org/practice-questions-time-complexity/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=V6mK-q4s-O4"
+        "Video Tutorials": "https://youtu.be/PwKv8fOcriM?si=N2f0AnUM6aUVDiFE"
     },
     "Arrays": {
         "Study Notes": "https://www.geeksforgeeks.org/arrays-in-java/",
         "Practice Problems": "https://leetcode.com/tag/array/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=meq8w-q3tHw"
+        "Video Tutorials": "https://youtu.be/NTHVTY6w2Co?si=9WjeV7suRr5N7rMp"
     },
     "Two Pointers & Sliding Window": {
         "Study Notes": "https://www.geeksforgeeks.org/two-pointers-technique/",
         "Practice Problems": "https://leetcode.com/tag/two-pointers/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=F_fW7B01sWc"
+        "Video Tutorials": "https://youtu.be/dQw4w9WgXcQ?feature=shared"
     },
     "Strings": {
         "Study Notes": "https://www.geeksfor geeks.org/strings-in-java/",
         "Practice Problems": "https://leetcode.com/tag/string/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=L2G3K11xK64"
+        "Video Tutorials": link
     },
     "Linked Lists": {
         "Study Notes": "https://www.geeksforgeeks.org/data-structures/linked-list/",
         "Practice Problems": "https://leetcode.com/tag/linked-list/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=YpG1x0s-d0A"
+        "Video Tutorials": link
     },
     "Stacks": {
         "Study Notes": "https://www.geeksforgeeks.org/stack-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/stack/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=r_C8t9W2gR4"
+        "Video Tutorials": link
     },
     "Queues": {
         "Study Notes": "https://www.geeksforgeeks.org/queue-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/queue/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=okr-XE8yTOg"
+        "Video Tutorials": link
     },
     "Trees": {
         "Study Notes": "https://www.geeksforgeeks.org/tree-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/tree/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=H7Kk2y-3Uqg"
+        "Video Tutorials": link
     },
     "Binary Search Trees (BST)": {
         "Study Notes": "https://www.geeksforgeeks.org/binary-search-tree-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/binary-search-tree/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=Kz6Mfwq-c3Q"
+        "Video Tutorials": link
     },
     "Heaps": {
         "Study Notes": "https://www.geeksforgeeks.org/heap-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/heap/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=t0Cq6tV-s-c"
+        "Video Tutorials": link
     },
     "Graphs (Basics)": {
         "Study Notes": "https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/",
         "Practice Problems": "https://leetcode.com/tag/graph/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=eP-aYw_6i7c"
+        "Video Tutorials": link
     },
     "Breadth-First Search (BFS)": {
         "Study Notes": "https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/",
         "Practice Problems": "https://leetcode.com/tag/breadth-first-search/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=oDqjPvD54Ss"
+        "Video Tutorials": link
     },
     "Depth-First Search (DFS)": {
         "Study Notes": "https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/",
         "Practice Problems": "https://leetcode.com/tag/depth-first-search/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=7f-v9X_G65A"
+        "Video Tutorials": link
     },
     "Hashing & HashMaps": {
         "Study Notes": "https://www.geeksforgeeks.org/hashing-data-structure/",
         "Practice Problems": "https://leetcode.com/tag/hash-table/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=7J3_23g_0I4"
+        "Video Tutorials": link
     },
     "Greedy Algorithms": {
         "Study Notes": "https://www.geeksforgeeks.org/greedy-algorithms/",
         "Practice Problems": "https://leetcode.com/tag/greedy/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=F_fW7B01sWc"
+        "Video Tutorials": link
     },
     "Dynamic Programming (DP)": {
         "Study Notes": "https://www.geeksforgeeks.org/dynamic-programming/",
         "Practice Problems": "https://leetcode.com/tag/dynamic-programming/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=oV0c-d4e5zM"
+        "Video Tutorials": link
     },
     "Top Interview Questions": {
         "Study Notes": "https://www.geeksforgeeks.org/top-10-algorithms-for-coding-interviews/",
         "Practice Problems": "https://leetcode.com/problem-list/top-100-liked-questions/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=meq8w-q3tHw"
+        "Video Tutorials": link
     },
     "Final Revision": {
         "Study Notes": "https://www.geeksforgeeks.org/how-to-prepare-for-placements-a-step-by-step-guide/",
         "Practice Problems": "https://www.interviewbit.com/coding-interview-questions/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=eP-aYw_6i7c"
+        "Video Tutorials": link
     },
     "Mock Interviews": {
         "Study Notes": "https://www.geeksforgeeks.org/how-to-prepare-for-technical-interview-for-beginners/",
         "Practice Problems": "https://www.interviewbit.com/mock-interviews/",
-        "Video Tutorials": "https://www.youtube.com/watch?v=2u7wN2n4u6E"
+        "Video Tutorials": link
     },
 };
 
@@ -261,7 +261,7 @@ export default function Tracker({ user, db, appId }) {
     };
 
     return (
-        <div className="antialiased font-sans bg-[#f8f7f4] text-[#4a4a4a] min-h-screen p-4 sm:p-6 lg:p-8">
+        <div className="antialiased font-sans bg-[#b6b6b6] text-[#4a4a4a] min-h-screen p-4 sm:p-6 lg:p-8">
             <style>
                 {`
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

@@ -120,7 +120,7 @@ export default function Auth({ auth }) {
           </div>
         </div>
         {message && (
-          <div className="mt-4 text-sm font-medium text-red-600 bg-red-50 p-3 rounded-lg border border-red-200">
+          <div className="mt-4 text-sm font-medium text-red-200 bg-red-900 p-3 rounded-lg border border-red-700">
             {message}
           </div>
         )}

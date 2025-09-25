@@ -30,9 +30,9 @@ const dsaPlan = [
 ];
 
 const statuses = {
-    'todo': { text: 'To Do', class: 'bg-gray-200 text-gray-600 border-gray-300' },
-    'inprogress': { text: 'In Progress', class: 'bg-yellow-100 text-yellow-800 border-yellow-400' },
-    'done': { text: 'Done', class: 'bg-green-100 text-green-800 border-green-400' }
+    'todo': { text: 'To Do', class: 'bg-[#2b2b2b] text-gray-400 border border-gray-600' },
+    'inprogress': { text: 'In Progress', class: 'bg-yellow-800 text-yellow-200 border border-yellow-700' },
+    'done': { text: 'Done', class: 'bg-green-800 text-green-200 border border-green-700' }
 };
 
 const chartConfig = {
@@ -43,12 +43,12 @@ const chartConfig = {
             label: 'Approx. Hours',
             data: [16.5, 11.5, 10, 12.5, 11.5, 16.5],
             backgroundColor: [
-                'rgba(139, 92, 246, 0.6)',
-                'rgba(129, 140, 248, 0.6)',
-                'rgba(96, 165, 250, 0.6)',
-                'rgba(52, 211, 153, 0.6)',
-                'rgba(251, 146, 60, 0.6)',
-                'rgba(239, 68, 68, 0.6)'
+                'rgba(139, 92, 246, 0.8)',
+                'rgba(129, 140, 248, 0.8)',
+                'rgba(96, 165, 250, 0.8)',
+                'rgba(52, 211, 153, 0.8)',
+                'rgba(251, 146, 60, 0.8)',
+                'rgba(239, 68, 68, 0.8)'
             ],
             borderColor: [
                 'rgba(139, 92, 246, 1)',
@@ -69,8 +69,15 @@ const chartConfig = {
                 beginAtZero: true,
                 title: {
                     display: true,
-                    text: 'Approximate Hours'
-                }
+                    text: 'Approximate Hours',
+                    color: '#a0a0a0'
+                },
+                grid: { color: '#333' },
+                ticks: { color: '#a0a0a0' }
+            },
+            x: {
+                grid: { color: '#333' },
+                ticks: { color: '#a0a0a0' }
             }
         },
         plugins: {
@@ -204,16 +211,24 @@ export default function Tracker({ user, db, appId }) {
 
     useEffect(() => {
         const initLoad = async () => {
-            const loadedPlan = await loadTrackerData(db, user.uid, appId);
-            if (loadedPlan) {
-                setPlan(loadedPlan);
-                setLoadingStatus('Progress loaded.');
-            } else {
+            try {
+                const loadedPlan = await loadTrackerData(db, user.uid, appId);
+                if (loadedPlan) {
+                    setPlan(loadedPlan);
+                    setLoadingStatus('Progress loaded.');
+                } else {
+                    setPlan(dsaPlan);
+                    setLoadingStatus('New user. Creating new plan.');
+                }
+            } catch (error) {
+                console.error("Failed to load tracker data:", error);
+                setLoadingStatus('Failed to load progress. Using default plan.');
                 setPlan(dsaPlan);
-                setLoadingStatus('New user. Creating new plan.');
             }
         };
-        initLoad();
+        if (user && db) {
+            initLoad();
+        }
     }, [user, db, appId]);
 
     const handleStatusChange = (index) => {
@@ -236,14 +251,14 @@ export default function Tracker({ user, db, appId }) {
             setModalContent(
                 <div className="flex flex-col gap-4">
                     {Object.entries(links).map(([key, value]) => (
-                        <a key={key} href={value} target="_blank" rel="noopener noreferrer" className="py-3 px-6 rounded-lg font-semibold text-white bg-violet-500 hover:bg-violet-600 transition-colors text-center">
+                        <a key={key} href={value} target="_blank" rel="noopener noreferrer" className="py-3 px-6 rounded-lg font-semibold text-white text-lg bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.01] text-center">
                             {key}
                         </a>
                     ))}
                 </div>
             );
         } else {
-            setModalContent(<p>No resources found for this topic.</p>);
+            setModalContent(<p className="text-gray-400">No resources found for this topic.</p>);
         }
         setIsModalOpen(true);
     };
@@ -261,79 +276,93 @@ export default function Tracker({ user, db, appId }) {
     };
 
     return (
-        <div className="antialiased font-sans bg-[#b6b6b6] text-[#4a4a4a] min-h-screen p-4 sm:p-6 lg:p-8">
+        <div className="antialiased font-sans bg-[#121212] text-gray-200 min-h-screen p-4 sm:p-6 lg:p-8">
             <style>
                 {`
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                .loader { border: 4px solid #f3f3f3; border-top: 4px solid #a78bfa; border-radius: 50%; width: 32px; height: 32px; animation: spin 1s linear infinite; }
-                .month-button.active { background-color: #a78bfa; color: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-                .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 100; }
-                .modal-content { background-color: #fff; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05); max-width: 90%; max-height: 90%; overflow-y: auto; position: relative; }
+                .loader { border: 4px solid #333; border-top: 4px solid #a78bfa; border-radius: 50%; width: 32px; height: 32px; animation: spin 1s linear infinite; }
+                .month-button {
+                    transition: all 0.3s ease-in-out;
+                    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
+                    background-color: #1e1e1e;
+                }
+                .month-button:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -4px rgba(0,0,0,0.1);
+                }
+                .month-button.active {
+                    background: linear-gradient(to right, #8a2be2, #5b17b2);
+                    color: white;
+                    transform: scale(1.05);
+                    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -4px rgba(0,0,0,0.1);
+                }
+                .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 100; }
+                .modal-content { background-color: #1e1e1e; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05); max-width: 90%; max-height: 90%; overflow-y: auto; position: relative; }
                 `}
             </style>
             <div className="container mx-auto max-w-7xl">
                 <header className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-violet-800 mb-2">DSA Placement Tracker</h1>
-                    <p className="text-lg text-gray-600">Your 3-Month Roadmap to Success</p>
-                    <button onClick={handleSignOut} className="mt-4 px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200 transition-colors">Sign Out</button>
+                    <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-purple-600 mb-2">DSA Placement Tracker</h1>
+                    <p className="text-lg text-gray-400">Your 3-Month Roadmap to Success</p>
+                    <button onClick={handleSignOut} className="mt-4 px-4 py-2 rounded-full text-sm font-semibold bg-red-800 text-red-200 hover:bg-red-700 transition-colors shadow-md">Sign Out</button>
                     <p id="loading-status" className="mt-4 text-sm font-medium text-gray-500">{loadingStatus}</p>
                     <p className="mt-2 text-sm font-medium text-gray-500">User ID: {user.uid}</p>
                 </header>
-                <section id="dashboard" className="mb-8 p-6 bg-white rounded-2xl shadow-lg">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Progress Overview</h2>
+                <section id="dashboard" className="mb-8 p-6 bg-[#1e1e1e] rounded-2xl shadow-lg">
+                    <h2 className="text-2xl font-bold text-gray-200 mb-4">Your Progress Overview</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                        <div className="bg-violet-100 p-4 rounded-xl">
-                            <p className="text-sm font-medium text-violet-700">Total Topics</p>
-                            <p className="text-3xl font-bold text-violet-900">{totalTopics}</p>
+                        <div className="bg-[#2a2a2a] p-4 rounded-xl shadow-inner">
+                            <p className="text-sm font-medium text-gray-400">Total Topics</p>
+                            <p className="text-3xl font-bold text-violet-500">{totalTopics}</p>
                         </div>
-                        <div className="bg-green-100 p-4 rounded-xl">
-                            <p className="text-sm font-medium text-green-700">Topics Completed</p>
-                            <p className="text-3xl font-bold text-green-900">{completedTopics}</p>
+                        <div className="bg-[#2a2a2a] p-4 rounded-xl shadow-inner">
+                            <p className="text-sm font-medium text-gray-400">Topics Completed</p>
+                            <p className="text-3xl font-bold text-green-500">{completedTopics}</p>
                         </div>
-                        <div className="bg-yellow-100 p-4 rounded-xl">
-                            <p className="text-sm font-medium text-yellow-700">In Progress</p>
-                            <p className="text-3xl font-bold text-yellow-900">{inProgressTopics}</p>
+                        <div className="bg-[#2a2a2a] p-4 rounded-xl shadow-inner">
+                            <p className="text-sm font-medium text-gray-400">In Progress</p>
+                            <p className="text-3xl font-bold text-yellow-500">{inProgressTopics}</p>
                         </div>
                     </div>
                     <div className="mt-6">
-                        <div className="w-full bg-gray-200 rounded-full h-4">
+                        <div className="w-full bg-[#333] rounded-full h-4">
                             <div className="bg-gradient-to-r from-violet-500 to-purple-600 h-4 rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }}></div>
                         </div>
-                        <p className="text-center mt-2 font-medium text-gray-600">{progressPercentage.toFixed(0)}% Complete</p>
+                        <p className="text-center mt-2 font-medium text-gray-400">{progressPercentage.toFixed(0)}% Complete</p>
                     </div>
                 </section>
                 <nav className="flex justify-center gap-2 sm:gap-4 mb-8">
-                    <button onClick={() => setCurrentMonth(1)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full bg-white shadow-md ${currentMonth === 1 ? 'active' : ''}`}>Month 1</button>
-                    <button onClick={() => setCurrentMonth(2)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full bg-white shadow-md ${currentMonth === 2 ? 'active' : ''}`}>Month 2</button>
-                    <button onClick={() => setCurrentMonth(3)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full bg-white shadow-md ${currentMonth === 3 ? 'active' : ''}`}>Month 3</button>
+                    <button onClick={() => setCurrentMonth(1)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md ${currentMonth === 1 ? 'active' : ''}`}>Month 1</button>
+                    <button onClick={() => setCurrentMonth(2)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md ${currentMonth === 2 ? 'active' : ''}`}>Month 2</button>
+                    <button onClick={() => setCurrentMonth(3)} className={`month-button text-sm sm:text-base font-semibold py-2 px-4 sm:px-6 rounded-full shadow-md ${currentMonth === 3 ? 'active' : ''}`}>Month 3</button>
                 </nav>
                 <main>
                     {weeks.map(weekNum => (
                         <div key={weekNum} className="mb-8">
-                            <h3 className="text-xl font-bold text-gray-700 mb-4 pl-2 border-l-4 border-violet-500">Week {weekNum}</h3>
+                            <h3 className="text-xl font-bold text-gray-300 mb-4 pl-2 border-l-4 border-violet-500">Week {weekNum}</h3>
                             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {filteredPlan.filter(item => item.week === weekNum).map((item, index) => {
                                     const globalIndex = plan.findIndex(p => p === item);
                                     return (
-                                        <div key={globalIndex} className="bg-white p-5 rounded-xl shadow-lg flex flex-col justify-between">
+                                        <div key={globalIndex} className="bg-[#1e1e1e] p-5 rounded-xl shadow-lg flex flex-col justify-between border border-gray-700">
                                             <div>
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <p className="text-xs font-semibold text-violet-600 bg-violet-100 px-2 py-1 rounded-full">Days {item.day}</p>
-                                                    <p className="text-xs font-semibold text-gray-500">{item.hours} hrs</p>
+                                                    <p className="text-xs font-semibold text-violet-300 bg-violet-900 px-2 py-1 rounded-full">Days {item.day}</p>
+                                                    <p className="text-xs font-semibold text-gray-400">{item.hours} hrs</p>
                                                 </div>
-                                                <h4 className="text-lg font-bold text-gray-800">{item.topic}</h4>
+                                                <h4 className="text-lg font-bold text-gray-100">{item.topic}</h4>
                                                 <div className="flex flex-wrap gap-2 mt-2">
                                                     {item.concepts.map(concept => (
-                                                        <span key={concept} onClick={() => handleResourceClick(item.topic)} className="text-xs font-semibold text-gray-600 bg-gray-200 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300 transition-colors">{concept}</span>
+                                                        <span key={concept} className="text-xs font-semibold text-gray-400 bg-gray-800 px-2 py-1 rounded-full">{concept}</span>
                                                     ))}
                                                 </div>
                                                 <div className="flex flex-col gap-2 mt-4">
-                                                    <button onClick={() => handleResourceClick(item.topic)} className="w-full py-2 px-4 rounded-lg font-semibold text-sm text-white bg-violet-500 hover:bg-violet-600 transition-colors">
+                                                    <button onClick={() => handleResourceClick(item.topic)} className="w-full py-2 px-4 rounded-lg font-semibold text-sm text-white bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-colors shadow-md">
                                                         ✨ View Resources
                                                     </button>
                                                 </div>
                                             </div>
-                                            <button onClick={() => handleStatusChange(globalIndex)} className={`w-full mt-4 py-2 px-4 rounded-lg font-semibold text-sm ${statuses[item.status].class}`}>
+                                            <button onClick={() => handleStatusChange(globalIndex)} className={`w-full mt-4 py-2 px-4 rounded-lg font-semibold text-sm ${statuses[item.status].class} transition-colors shadow-md`}>
                                                 {statuses[item.status].text}
                                             </button>
                                         </div>
@@ -343,9 +372,9 @@ export default function Tracker({ user, db, appId }) {
                         </div>
                     ))}
                 </main>
-                <section className="mt-12 p-6 bg-white rounded-2xl shadow-lg">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-1 text-center">Effort Distribution</h2>
-                    <p className="text-center text-gray-600 mb-6">This chart visualizes the approximate time commitment for major topic categories in your 3-month plan, helping you anticipate and manage your study efforts effectively.</p>
+                <section className="mt-12 p-6 bg-[#1e1e1e] rounded-2xl shadow-lg">
+                    <h2 className="text-2xl font-bold text-gray-200 mb-1 text-center">Effort Distribution</h2>
+                    <p className="text-center text-gray-400 mb-6">This chart visualizes the approximate time commitment for major topic categories in your 3-month plan.</p>
                     <div className="chart-container">
                         <ChartComponent />
                     </div>
@@ -355,8 +384,8 @@ export default function Tracker({ user, db, appId }) {
                 <div className="modal" onClick={() => setIsModalOpen(false)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-xl font-bold text-gray-800">{modalTitle}</h3>
-                            <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-800 text-2xl leading-none font-semibold">&times;</button>
+                            <h3 className="text-xl font-bold text-gray-200">{modalTitle}</h3>
+                            <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-200 text-2xl leading-none font-semibold">&times;</button>
                         </div>
                         <div>{modalContent}</div>
                     </div>

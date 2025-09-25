@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, confirmPasswordReset } from 'firebase/auth';
+import { confirmPasswordReset } from 'firebase/auth';
 
 export default function PasswordReset({ auth }) {
   const [newPassword, setNewPassword] = useState('');

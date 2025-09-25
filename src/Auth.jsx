@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 
-export default function Auth() {
+export default function Auth({ auth }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetMessage, setResetMessage] = useState('');
-
-  const auth = getAuth();
 
   const handleSignIn = async () => {
     try {
@@ -33,8 +31,8 @@ export default function Auth() {
 
   if (showForgotPassword) {
     return (
-      <div className="antialiased font-sans bg-[#4A4A49] text-[#ececec] min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-        <div className="bg-[#dadada] p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center">
+      <div className="antialiased font-sans bg-[#121212] text-gray-200 min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+        <div className="bg-[#1e1e1e] p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-gray-700">
           <div className="flex justify-center mb-6">
             <svg className="w-24 h-24" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -47,22 +45,22 @@ export default function Auth() {
               <path d="M60 24c-19.882 0-36 16.118-36 36s16.118 36 36 36 36-16.118 36-36-16.118-36-36-36zm0 54c-9.941 0-18-8.059-18-18s8.059-18 18-18 18 8.059 18 18-8.059 18-18 18z" fill="white" />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Forgot Password?</h2>
-          <p className="text-sm text-gray-500 mb-6">Enter your email to receive a reset link.</p>
+          <h2 className="text-3xl font-bold text-gray-100 mb-2">Forgot Password?</h2>
+          <p className="text-sm text-gray-400 mb-6">Enter your email to receive a reset link.</p>
           <div className="space-y-4 text-left">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
               <input
                 type="email"
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                className="mt-1 block w-full px-4 py-3 rounded-lg text-black border border-gray-300 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
+                className="mt-1 block w-full px-4 py-3 rounded-lg text-gray-200 bg-[#2b2b2b] border border-gray-600 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
                 placeholder="Enter your email"
               />
             </div>
           </div>
           {resetMessage && (
-            <div className="mt-4 text-sm font-medium text-green-600 bg-green-50 p-3 rounded-lg border border-green-200">
+            <div className="mt-4 text-sm font-medium text-green-200 bg-green-900 p-3 rounded-lg border border-green-700">
               {resetMessage}
             </div>
           )}
@@ -83,8 +81,8 @@ export default function Auth() {
   }
 
   return (
-    <div className="antialiased font-sans bg-[#4A4A49] text-[#ececec] min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
-      <div className="bg-[#dadada] p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center">
+    <div className="antialiased font-sans bg-[#121212] text-gray-200 min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+      <div className="bg-[#1e1e1e] p-8 sm:p-10 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-gray-700">
         <div className="flex justify-center mb-6">
           <svg className="w-24 h-24" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -97,26 +95,26 @@ export default function Auth() {
             <path d="M60 24c-19.882 0-36 16.118-36 36s16.118 36 36 36 36-16.118 36-36-16.118-36-36-36zm0 54c-9.941 0-18-8.059-18-18s8.059-18 18-18 18 8.059 18 18-8.059 18-18 18z" fill="white" />
           </svg>
         </div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-        <p className="text-sm text-gray-500 mb-6">Sign in to access your progress.</p>
+        <h2 className="text-3xl font-bold text-gray-100 mb-2">Welcome Back</h2>
+        <p className="text-sm text-gray-400 mb-6">Sign in to access your progress.</p>
         <div className="space-y-4 text-left">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 rounded-lg text-black border border-gray-300 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
+              className="mt-1 block w-full px-4 py-3 rounded-lg text-gray-200 bg-[#2b2b2b] border border-gray-600 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
               placeholder="Enter your email"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-400 mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 rounded-lg text-black border border-gray-300 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
+              className="mt-1 block w-full px-4 py-3 rounded-lg text-gray-200 bg-[#2b2b2b] border border-gray-600 shadow-sm focus:border-violet-400 focus:ring focus:ring-violet-200 focus:ring-opacity-50 transition-colors"
               placeholder="Enter your password"
             />
           </div>

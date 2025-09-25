@@ -4,12 +4,10 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, setLogLevel } from 'firebase/firestore';
 import Tracker from './Tracker';
 import Auth from './Auth';
+import PasswordReset from './PasswordReset';
 
-// Global Firebase and App State
-let db, auth;
+// Firebase and App State Initialization (Top-level)
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-let firebaseInitialized = false;
-
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -20,25 +18,30 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-function initFirebase() {
-    try {
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-        setLogLevel('Debug');
-        firebaseInitialized = true;
-    } catch (e) {
-        console.error("Firebase initialization failed:", e);
-    }
+let app, db, auth;
+try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    setLogLevel('Debug');
+} catch (e) {
+    console.error("Firebase initialization failed:", e);
 }
 
 export default function App() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isResettingPassword, setIsResettingPassword] = useState(false);
 
     useEffect(() => {
-        initFirebase();
-        if (!firebaseInitialized) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'resetPassword') {
+            setIsResettingPassword(true);
+            setLoading(false);
+            return;
+        }
+
+        if (!auth) {
             setLoading(false);
             return;
         }
@@ -59,9 +62,13 @@ export default function App() {
         );
     }
 
+    if (isResettingPassword) {
+        return <PasswordReset auth={auth} />;
+    }
+
     return (
         <div className="antialiased font-sans text-[#4a4a4a] min-h-screen">
-            {user ? <Tracker user={user} db={db} appId={appId} /> : <Auth />}
+            {user ? <Tracker user={user} db={db} appId={appId} /> : <Auth auth={auth} />}
         </div>
     );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, setLogLevel } from 'firebase/firestore';
+import { Helmet } from 'react-helmet-async';
 import Tracker from './Tracker';
 import Auth from './Auth';
 import PasswordReset from './PasswordReset';
@@ -68,6 +69,10 @@ export default function App() {
 
     return (
         <div className="antialiased font-sans text-[#4a4a4a] min-h-screen">
+            <Helmet>
+                <title>DSA Placement Tracker - Your 3-Month Roadmap</title>
+                <meta name="description" content="Track your Data Structures and Algorithms progress with a personalized 3-month roadmap. Prepare for off-campus placements with a day-wise plan and resources." />
+            </Helmet>
             {user ? <Tracker user={user} db={db} appId={appId} /> : <Auth auth={auth} />}
         </div>
     );

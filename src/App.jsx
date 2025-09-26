@@ -72,6 +72,14 @@ export default function App() {
             <Helmet>
                 <title>DSA Placement Tracker - Your 3-Month Roadmap</title>
                 <meta name="description" content="Track your Data Structures and Algorithms progress with a personalized 3-month roadmap. Prepare for off-campus placements with a day-wise plan and resources." />
+                <link rel="canonical" href="https://dsatrackerhvsc.netlify.app/" />
+                <meta property="og:title" content="DSA Placement Tracker" />
+                <meta property="og:description" content="A 3-month roadmap to success for off-campus placements. Track your progress with a day-wise plan and curated resources." />
+                <meta property="og:url" content="https://dsatrackerhvsc.netlify.app/" />
+                <meta property="og:type" content="website" />
+                <meta property="twitter:card" content="summary_large_image" />
+                <meta property="twitter:title" content="DSA Placement Tracker" />
+                <meta property="twitter:description" content="A 3-month roadmap to success for off-campus placements. Track your progress with a day-wise plan and curated resources." />
             </Helmet>
             {user ? <Tracker user={user} db={db} appId={appId} /> : <Auth auth={auth} />}
         </div>

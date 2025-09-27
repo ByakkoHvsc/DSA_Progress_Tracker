@@ -1,32 +1,36 @@
+// Tracker.jsx
+
 import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { loadTrackerData, saveTrackerData } from './Firestore';
 import { getAuth, signOut } from 'firebase/auth';
+import Footer from './Footer';
+import NotesModal from './NotesModal'; // Import the NotesModal
 
 // Dummy data for the tracker plan
 const dsaPlan = [
-    { month: 1, week: 1, day: "1-2", topic: "Java Basics & OOP", hours: "2-3", concepts: ["Variables", "Loops", "Methods", "Classes", "Objects"], status: "todo" },
-    { month: 1, week: 1, day: "3-4", topic: "Time & Space Complexity", hours: "2-3", concepts: ["Big O Notation", "Big Omega", "Big Theta"], status: "todo" },
-    { month: 1, week: 1, day: "5-7", topic: "Arrays", hours: "3-4", concepts: ["Array Operations", "2D Arrays", "Rotation", "Searching"], status: "todo" },
-    { month: 1, week: 2, day: "8-10", topic: "Two Pointers & Sliding Window", hours: "3-4", concepts: ["Two Pointers technique", "Sliding Window technique"], status: "todo" },
-    { month: 1, week: 2, day: "11-14", topic: "Strings", hours: "3-4", concepts: ["Palindromes", "Anagrams", "String Builders"], status: "todo" },
-    { month: 1, week: 3, day: "15-18", topic: "Linked Lists", hours: "3-4", concepts: ["Singly Linked List", "Doubly Linked List", "Circular Linked List"], status: "todo" },
-    { month: 1, week: 3, day: "19-21", topic: "Stacks", hours: "2-3", concepts: ["LIFO", "Parenthesis Matching"], status: "todo" },
-    { month: 1, week: 4, day: "22-24", topic: "Queues", hours: "2-3", concepts: ["FIFO", "Deque"], status: "todo" },
-    { month: 1, week: 4, day: "25-30", topic: "Practice & Revision", hours: "4-5", concepts: ["Mixed problems"], status: "todo" },
-    { month: 2, week: 5, day: "1-4", topic: "Trees", hours: "3-4", concepts: ["Tree Traversals (In-order, Pre-order, Post-order)"], status: "todo" },
-    { month: 2, week: 5, day: "5-8", topic: "Binary Search Trees (BST)", hours: "3-4", concepts: ["BST Properties", "Insertion", "Deletion", "Searching"], status: "todo" },
-    { month: 2, week: 6, day: "9-12", topic: "Heaps", hours: "3-4", concepts: ["Min-Heap", "Max-Heap", "Kth Smallest/Largest Element"], status: "todo" },
-    { month: 2, week: 6, day: "13-16", topic: "Graphs (Basics)", hours: "3-4", concepts: ["Adjacency Matrix", "Adjacency List"], status: "todo" },
-    { month: 2, week: 7, day: "17-20", topic: "Breadth-First Search (BFS)", hours: "4-5", concepts: ["Shortest Path", "Level-Order Traversal"], status: "todo" },
-    { month: 2, week: 7, day: "21-24", topic: "Depth-First Search (DFS)", hours: "4-5", concepts: ["Cycle Detection", "Connected Components"], status: "todo" },
-    { month: 2, week: 8, day: "25-30", topic: "Mixed Practice", hours: "4-5", concepts: ["Mixed problems"], status: "todo" },
-    { month: 3, week: 9, day: "1-4", topic: "Hashing & HashMaps", hours: "3-4", concepts: ["Frequency Counting", "Hashing Collisions"], status: "todo" },
-    { month: 3, week: 9, day: "5-8", topic: "Greedy Algorithms", hours: "3-4", concepts: ["Activity Selection", "Job Sequencing"], status: "todo" },
-    { month: 3, week: 10, day: "9-16", topic: "Dynamic Programming (DP)", hours: "4-5", concepts: ["Fibonacci", "Knapsack Problem", "Longest Common Subsequence"], status: "todo" },
-    { month: 3, week: 11, day: "17-21", topic: "Top Interview Questions", hours: "5-6", concepts: ["Company-specific problems"], status: "todo" },
-    { month: 3, week: 11, day: "22-25", topic: "Mock Interviews", hours: "5-6", concepts: ["Verbalizing thought process"], status: "todo" },
-    { month: 3, week: 12, day: "26-30", topic: "Final Revision", hours: "6+", concepts: ["Rework challenging problems"], status: "todo" }
+    { month: 1, week: 1, day: "1-2", topic: "Java Basics & OOP", hours: "2-3", concepts: ["Variables", "Loops", "Methods", "Classes", "Objects"], status: "todo", notes: "" }, // Added notes field
+    { month: 1, week: 1, day: "3-4", topic: "Time & Space Complexity", hours: "2-3", concepts: ["Big O Notation", "Big Omega", "Big Theta"], status: "todo", notes: "" },
+    { month: 1, week: 1, day: "5-7", topic: "Arrays", hours: "3-4", concepts: ["Array Operations", "2D Arrays", "Rotation", "Searching"], status: "todo", notes: "" },
+    { month: 1, week: 2, day: "8-10", topic: "Two Pointers & Sliding Window", hours: "3-4", concepts: ["Two Pointers technique", "Sliding Window technique"], status: "todo", notes: "" },
+    { month: 1, week: 2, day: "11-14", topic: "Strings", hours: "3-4", concepts: ["Palindromes", "Anagrams", "String Builders"], status: "todo", notes: "" },
+    { month: 1, week: 3, day: "15-18", topic: "Linked Lists", hours: "3-4", concepts: ["Singly Linked List", "Doubly Linked List", "Circular Linked List"], status: "todo", notes: "" },
+    { month: 1, week: 3, day: "19-21", topic: "Stacks", hours: "2-3", concepts: ["LIFO", "Parenthesis Matching"], status: "todo", notes: "" },
+    { month: 1, week: 4, day: "22-24", topic: "Queues", hours: "2-3", concepts: ["FIFO", "Deque"], status: "todo", notes: "" },
+    { month: 1, week: 4, day: "25-30", topic: "Practice & Revision", hours: "4-5", concepts: ["Mixed problems"], status: "todo", notes: "" },
+    { month: 2, week: 5, day: "1-4", topic: "Trees", hours: "3-4", concepts: ["Tree Traversals (In-order, Pre-order, Post-order)"], status: "todo", notes: "" },
+    { month: 2, week: 5, day: "5-8", topic: "Binary Search Trees (BST)", hours: "3-4", concepts: ["BST Properties", "Insertion", "Deletion", "Searching"], status: "todo", notes: "" },
+    { month: 2, week: 6, day: "9-12", topic: "Heaps", hours: "3-4", concepts: ["Min-Heap", "Max-Heap", "Kth Smallest/Largest Element"], status: "todo", notes: "" },
+    { month: 2, week: 6, day: "13-16", topic: "Graphs (Basics)", hours: "3-4", concepts: ["Adjacency Matrix", "Adjacency List"], status: "todo", notes: "" },
+    { month: 2, week: 7, day: "17-20", topic: "Breadth-First Search (BFS)", hours: "4-5", concepts: ["Shortest Path", "Level-Order Traversal"], status: "todo", notes: "" },
+    { month: 2, week: 7, day: "21-24", topic: "Depth-First Search (DFS)", hours: "4-5", concepts: ["Cycle Detection", "Connected Components"], status: "todo", notes: "" },
+    { month: 2, week: 8, day: "25-30", topic: "Mixed Practice", hours: "4-5", concepts: ["Mixed problems"], status: "todo", notes: "" },
+    { month: 3, week: 9, day: "1-4", topic: "Hashing & HashMaps", hours: "3-4", concepts: ["Frequency Counting", "Hashing Collisions"], status: "todo", notes: "" },
+    { month: 3, week: 9, day: "5-8", topic: "Greedy Algorithms", hours: "3-4", concepts: ["Activity Selection", "Job Sequencing"], status: "todo", notes: "" },
+    { month: 3, week: 10, day: "9-16", topic: "Dynamic Programming (DP)", hours: "4-5", concepts: ["Fibonacci", "Knapsack Problem", "Longest Common Subsequence"], status: "todo", notes: "" },
+    { month: 3, week: 11, day: "17-21", topic: "Top Interview Questions", hours: "5-6", concepts: ["Company-specific problems"], status: "todo", notes: "" },
+    { month: 3, week: 11, day: "22-25", topic: "Mock Interviews", hours: "5-6", concepts: ["Verbalizing thought process"], status: "todo", notes: "" },
+    { month: 3, week: 12, day: "26-30", topic: "Final Revision", hours: "6+", concepts: ["Rework challenging problems"], status: "todo", notes: "" }
 ];
 
 const statuses = {
@@ -108,7 +112,7 @@ const resourceLinks = {
     "Two Pointers & Sliding Window": {
         "Study Notes": "https://www.geeksforgeeks.org/two-pointers-technique/",
         "Practice Problems": "https://leetcode.com/tag/two-pointers/",
-        "Video Tutorials": "https://youtu.be/dQw4w9WgXcQ?feature=shared"
+        "Video Tutorials": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     },
     "Strings": {
         "Study Notes": "https://www.geeksfor geeks.org/strings-in-java/",
@@ -205,16 +209,23 @@ export default function Tracker({ user, db, appId }) {
     const [plan, setPlan] = useState(dsaPlan);
     const [currentMonth, setCurrentMonth] = useState(1);
     const [loadingStatus, setLoadingStatus] = useState('Loading your progress...');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isResourceModalOpen, setIsResourceModalOpen] = useState(false); // Renamed to avoid conflict
     const [modalTitle, setModalTitle] = useState('');
     const [modalContent, setModalContent] = useState('');
+
+    // New state for NotesModal
+    const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
+    const [currentTopicForNotes, setCurrentTopicForNotes] = useState('');
+    const [currentNotesContent, setCurrentNotesContent] = useState('');
 
     useEffect(() => {
         const initLoad = async () => {
             try {
                 const loadedPlan = await loadTrackerData(db, user.uid, appId);
                 if (loadedPlan) {
-                    setPlan(loadedPlan);
+                    // Ensure loaded plan has 'notes' field for compatibility, initialize if missing
+                    const sanitizedPlan = loadedPlan.map(item => ({ ...item, notes: item.notes || "" }));
+                    setPlan(sanitizedPlan);
                     setLoadingStatus('Progress loaded.');
                 } else {
                     setPlan(dsaPlan);
@@ -260,8 +271,32 @@ export default function Tracker({ user, db, appId }) {
         } else {
             setModalContent(<p className="text-gray-400">No resources found for this topic.</p>);
         }
-        setIsModalOpen(true);
+        setIsResourceModalOpen(true); // Changed to isResourceModalOpen
     };
+
+    // Handler to open NotesModal
+    const handleOpenNotesModal = (topic, notes) => {
+        setCurrentTopicForNotes(topic);
+        setCurrentNotesContent(notes);
+        setIsNotesModalOpen(true);
+    };
+
+    // Handler to close NotesModal
+    const handleCloseNotesModal = () => {
+        setIsNotesModalOpen(false);
+        setCurrentTopicForNotes('');
+        setCurrentNotesContent('');
+    };
+
+    // Handler to save notes
+    const handleSaveNotes = (newNotes) => {
+        const updatedPlan = plan.map(item =>
+            item.topic === currentTopicForNotes ? { ...item, notes: newNotes } : item
+        );
+        setPlan(updatedPlan);
+        saveTrackerData(db, user.uid, appId, updatedPlan);
+    };
+
 
     const filteredPlan = plan.filter(item => item.month === currentMonth);
     const weeks = [...new Set(filteredPlan.map(item => item.week))];
@@ -297,7 +332,7 @@ export default function Tracker({ user, db, appId }) {
                     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -4px rgba(0,0,0,0.1);
                 }
                 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 100; }
-                .modal-content { background-color: #1e1e1e; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05); max-width: 90%; max-height: 90%; overflow-y: auto; position: relative; }
+                .modal-content { background-color: #1e1e1e; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 44px 6px -2px rgb(0 0 0 / 0.05); max-width: 90%; max-height: 90%; overflow-y: auto; position: relative; }
                 `}
             </style>
             <div className="container mx-auto max-w-7xl">
@@ -357,8 +392,12 @@ export default function Tracker({ user, db, appId }) {
                                                     ))}
                                                 </div>
                                                 <div className="flex flex-col gap-2 mt-4">
-                                                    <button onClick={() => handleResourceClick(item.topic)} className="w-full py-2 px-4 rounded-lg font-semibold text-sm text-white bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-colors shadow-md">
+                                                    <button onClick={() => handleResourceClick(item.topic)} className="w-full py-2 px-4 rounded-lg font-semibold text-sm text-white bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-colors shadow-md mb-2">
                                                         ✨ View Resources
+                                                    </button>
+                                                    {/* New button to open NotesModal */}
+                                                    <button onClick={() => handleOpenNotesModal(item.topic, item.notes)} className="w-full py-2 px-4 rounded-lg font-semibold text-sm text-white bg-gray-700 hover:bg-gray-600 transition-colors shadow-md">
+                                                        📝 View/Edit Notes
                                                     </button>
                                                 </div>
                                             </div>
@@ -379,17 +418,28 @@ export default function Tracker({ user, db, appId }) {
                         <ChartComponent />
                     </div>
                 </section>
+                <Footer />
             </div>
-            {isModalOpen && (
-                <div className="modal" onClick={() => setIsModalOpen(false)}>
+            {isResourceModalOpen && ( // Changed to isResourceModalOpen
+                <div className="modal" onClick={() => setIsResourceModalOpen(false)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-bold text-gray-200">{modalTitle}</h3>
-                            <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-200 text-2xl leading-none font-semibold">&times;</button>
+                            <button onClick={() => setIsResourceModalOpen(false)} className="text-gray-500 hover:text-gray-200 text-2xl leading-none font-semibold">&times;</button>
                         </div>
                         <div>{modalContent}</div>
                     </div>
                 </div>
+            )}
+
+            {/* Render NotesModal conditionally */}
+            {isNotesModalOpen && (
+                <NotesModal
+                    topic={currentTopicForNotes}
+                    onClose={handleCloseNotesModal}
+                    onSave={handleSaveNotes}
+                    savedNotes={currentNotesContent}
+                />
             )}
         </div>
     );

@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import Tracker from './Tracker';
 import Auth from './Auth';
 import PasswordReset from './PasswordReset';
+import Footer from './Footer';
 
 // Firebase and App State Initialization (Top-level)
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -57,7 +58,7 @@ export default function App() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen bg-[#f8f7f4]">
+            <div className="flex justify-center items-center min-h-screen bg-[#121212]">
                 <div className="loader"></div>
             </div>
         );
@@ -68,10 +69,10 @@ export default function App() {
     }
 
     return (
-        <div className="antialiased font-sans text-[#4a4a4a] min-h-screen">
+        <div className="antialiased font-sans text-gray-200 min-h-screen flex flex-col justify-between">
             <Helmet>
                 <title>DSA Placement Tracker - Your 3-Month Roadmap</title>
-                <meta name="description" content="Track your Data Structures and Algorithms progress with a personalized 3-month roadmap. Prepare for off-campus placements with a day-wise plan and resources." />
+                <meta name="description" content="Track your Data Structures and Algorithms progress with a personalized 3-month roadmap. Prepare for off-campus placements with a day-wise plan and curated resources." />
                 <link rel="canonical" href="https://dsatrackerhvsc.netlify.app/" />
                 <meta property="og:title" content="DSA Placement Tracker" />
                 <meta property="og:description" content="A 3-month roadmap to success for off-campus placements. Track your progress with a day-wise plan and curated resources." />

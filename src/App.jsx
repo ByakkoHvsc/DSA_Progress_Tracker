@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet-async';
 import Tracker from './Tracker';
 import Auth from './Auth';
 import PasswordReset from './PasswordReset';
-import Footer from './Footer';
 
 // Firebase and App State Initialization (Top-level)
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';

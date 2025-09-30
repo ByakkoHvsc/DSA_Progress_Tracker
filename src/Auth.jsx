@@ -7,7 +7,7 @@ import {
     signOut
 } from 'firebase/auth';
 
-// --- Reusable UI Components ---
+// ... (Reusable UI Components: Logo, Message, AuthInput, PasswordInput, AuthButton, Footer remain unchanged) ...
 
 const Logo = () => (
     <div className="flex justify-center mb-6">
@@ -114,22 +114,38 @@ export default function Auth({ auth }) {
 
     const handleSignIn = () => handleAuthAction(async () => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        // User is now signed in. Firebase's onAuthStateChanged listener in the parent component
+        // should detect this and render the next page.
+        
+        // This is where you had an issue:
+        // if (!userCredential.user.emailVerified) {
+        //     await signOut(auth); // <-- REMOVED: This line signs the user out immediately!
+        //     throw new Error('Email not verified. Please check your inbox for the verification link.');
+        // }
+        // FIX: Replaced with a more informative message, but keeping the user signed in.
+        // The parent component should likely check for email verification and display a persistent banner.
         if (!userCredential.user.emailVerified) {
-            await signOut(auth);
-            throw new Error('Email not verified. Please check your inbox for the verification link.');
+            setMessageType('error');
+            setMessage('Your email is not verified. Please check your inbox. You are signed in, but some features may be restricted.');
+            // Crucially, we do NOT sign out here, letting the parent component render the next page.
         }
+        
     });
 
     const handleSignUp = () => handleAuthAction(async () => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
-        await signOut(auth);
+        
+        // You MUST sign out here so the new user isn't logged in until verification.
+        await signOut(auth); 
+        
         setMessageType('success');
         setMessage('Account created! A verification link has been sent to your email. Please verify before signing in.');
         setEmail('');
         setPassword('');
     });
-
+    
+    // ... (handlePasswordReset and handleAuthError remain unchanged) ...
     const handlePasswordReset = () => handleAuthAction(async () => {
         await sendPasswordResetEmail(auth, resetEmail);
         setMessageType('success');
@@ -138,6 +154,7 @@ export default function Auth({ auth }) {
 
     const handleAuthError = (error) => {
         setMessageType('error');
+        // Firebase Auth error codes can be found in the documentation
         switch (error.code) {
             case 'auth/user-not-found':
             case 'auth/invalid-credential':
@@ -149,11 +166,17 @@ export default function Auth({ auth }) {
             case 'auth/email-already-in-use':
                 setMessage('This email is already in use. Please sign in.');
                 break;
+            case 'auth/missing-email':
+            case 'auth/invalid-email':
+                setMessage('Please enter a valid email address.');
+                break;
             default:
+                // For custom errors thrown inside handleSignIn (like the unverified email error)
                 setMessage(error.message || 'An unexpected error occurred. Please try again.');
         }
     };
-    
+
+    // ... (renderForm remains unchanged) ...
     const renderForm = () => {
         if (authMode === 'forgotPassword') {
             return (
@@ -202,6 +225,7 @@ export default function Auth({ auth }) {
             </>
         );
     };
+
 
     return (
         <div className="antialiased font-sans bg-[#121212] text-gray-200 min-h-screen p-4 sm:p-6 lg:p-8 flex items-center justify-center flex-col">

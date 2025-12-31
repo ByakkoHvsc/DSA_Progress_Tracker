@@ -1,16 +1,107 @@
-<<<<<<< HEAD
-# DSA_Progress_Tracker
-=======
-# React + Vite
+# 🚀 DSA Progress Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and interactive web application designed to help developers track their progress while learning **Data Structures and Algorithms (DSA)**.  
+Built with **React** and **Vite** for a fast and responsive user experience.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** https://dsa-progress-tracker-three.vercel.app  
+👤 **Author / GitHub:** https://github.com/byakkohvsc  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📋 Table of Contents
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
->>>>>>> d2be677 (Initial commit for DSA Tracker app)
+- [About](#-about)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Installation](#-installation)
+- [Project Structure](#-project-structure)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 📖 About
+
+The **DSA Progress Tracker** is a productivity-focused tool for students and professionals preparing for technical interviews.  
+It helps users systematically monitor their problem-solving journey, maintain consistency, and ensure coverage of essential DSA topics.
+
+---
+
+## ✨ Features
+
+- 📊 **Progress Dashboard** – Visual representation of completed vs pending problems  
+- 🧩 **Topic-wise Tracking** – Arrays, Strings, Linked Lists, Trees, Graphs, and more  
+- 📱 **Responsive Design** – Optimized for desktop and mobile  
+- ⚡ **Fast Performance** – Powered by Vite with Hot Module Replacement (HMR)
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** React.js  
+- **Build Tool:** Vite  
+- **Language:** JavaScript  
+- **Styling:** CSS / Tailwind CSS  
+- **Deployment:** Vercel  
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v16+ recommended)
+- npm
+
+---
+
+## 💻 Installation
+
+```bash
+git clone https://github.com/ByakkoHvsc/DSA_Progress_Tracker.git
+cd DSA_Progress_Tracker
+npm install
+npm run dev
+```
+
+Visit: `http://localhost:5173`
+
+---
+
+## 📂 Project Structure
+
+```bash
+DSA_Progress_Tracker/
+├── public/
+├── src/
+│   ├── components/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo  
+2. Create a branch (`git checkout -b feature/YourFeature`)  
+3. Commit changes (`git commit -m "Add feature"`)  
+4. Push and open a Pull Request  
+
+---
+
+## 📄 License
+
+Licensed under the **MIT License**.
+
+---
+
+### ❤️ Made with love by **ByakkoHvsc**
